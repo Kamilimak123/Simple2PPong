@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Welcome to Pong Game</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        canvas {
+            background: #eee;
+            display: block;
+            margin: 20px auto;
+            border: 1px solid #000000;
+        }
+
+        .container {
+            margin: 10px auto;
+            text-align: center;
+        }
+
+        .gameContainer {
+            margin: 10px auto;
+            text-align: center;
+            font-size: 3rem;
+            width: 800px;
+            height: 600px;
+        }
+
+        #leftScore {
+            float: left;
+        }
+
+        #rightScore {
+            float: right;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2 class="item">Pong Game</h2>
+    </div>
+
+    <div class="gameContainer" width="800" height="600">
+        <span id="leftScore">0</span> <span id="rightScore">0</span>
+        <canvas id="myCanvas" width="800" height="600"></canvas>
+    </div>
+
+    <script>
+        var canvas = document.getElementById("myCanvas");       // obiekt canvas
+        var ctx = canvas.getContext("2d");                      // odniesienie do context2D obiektu canvas
+
+        var leftScore = document.getElementById("leftScore");
+        var rightScore = document.getElementById("rightScore");
+        var ballRadius = 10;                                    // promień piłki
+        var x = canvas.width / 2;                               // pozycja startowa X (pozioma) piłki
+        var y = canvas.height / 2;                              // pozycja startowa Y (pionowa) piłki
+        var dx = 2;                                             // szybkość piłki w osi poziomej
+        var dy = -2;                                            // szybkość piłki w osi pionowej
+        var velocity = dx * dx + dy * dy;
+        var Vel = velocity;
+        var gamePause = false;
+
+        var leftPaddleHeight = 100;
+        var leftPaddleWidth = 10;
+        var leftPaddleY = (canvas.height - leftPaddleHeight) / 2;
+
+        var rightPaddleHeight = 100;
+        var rightPaddleWidth = 10;
+        var rightPaddleY = (canvas.height - rightPaddleHeight) / 2;
+
+        var WPressed = false;
+        var SPressed = false;
+        var UpPressed = false;
+        var DownPressed = false;
+
+        document.addEventListener("keydown", keyDownHandler, false);
+        document.addEventListener("keyup", keyUpHandler, false);
+
+        function keyDownHandler(e) {
+            if (e.key == "Up" || e.key == "ArrowUp") {
+                UpPressed = true;
+            }
+            else if (e.key == "Down" || e.key == "ArrowDown") {
+                DownPressed = true;
+            }
+            if (e.key == "w") {
+                WPressed = true;
+            }
+            else if (e.key == "s") {
+                SPressed = true;
+            }
+            if (!gamePause) {
+                if (e.key == "p") {
+                    alert("Pause");
+                    gamePause = true;
+                }
+            }
+
+        }
+
+        function keyUpHandler(e) {
+            if (e.key == "Up" || e.key == "ArrowUp") {
+                UpPressed = false;
+            }
+            else if (e.key == "Down" || e.key == "ArrowDown") {
+                DownPressed = false;
+            }
+            if (e.key == "w") {
+                WPressed = false;
+            }
+            else if (e.key == "s") {
+                SPressed = false;
+            }
+            if (e.key == "p") {
+                gamePause = false;
+            }
+        }
+
+        function movePaddles() {
+            if (DownPressed && rightPaddleY < canvas.height - rightPaddleHeight) {
+                rightPaddleY += 5;
+            }
+            else if (UpPressed && rightPaddleY > 0) {
+                rightPaddleY -= 5;
+            }
+            if (SPressed && leftPaddleY < canvas.height - leftPaddleHeight) {
+                leftPaddleY += 5;
+            }
+            else if (WPressed && leftPaddleY > 0) {
+                leftPaddleY -= 5;
+            }
+        }
+
+        function drawBall() {
+            ctx.beginPath();
+            ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
+            ctx.fillStyle = "#0095DD";
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        function drawPaddles() {
+            ctx.beginPath();
+            ctx.rect(0, leftPaddleY, leftPaddleWidth, leftPaddleHeight);
+            ctx.fillStyle = "#0095DD";
+            ctx.fill();
+            ctx.closePath();
+
+            ctx.beginPath();
+            ctx.arc(5, leftPaddleY + leftPaddleHeight / 2, 5, 0, Math.PI * 2);
+            ctx.fillStyle = "#FF0000";
+            ctx.fill();
+            ctx.closePath();
+
+            ctx.beginPath();
+            ctx.rect(790, rightPaddleY, rightPaddleWidth, rightPaddleHeight);
+            ctx.fillStyle = "#0095DD";
+            ctx.fill();
+            ctx.closePath();
+
+            ctx.beginPath();
+            ctx.arc(795, rightPaddleY + rightPaddleHeight / 2, 5, 0, Math.PI * 2);
+            ctx.fillStyle = "#FF0000";
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        function checkWalls() {
+            if (x + dx > canvas.width - ballRadius) {
+                if (y > rightPaddleY - ballRadius && y < rightPaddleY + rightPaddleHeight + ballRadius) {
+
+                    calcHit("right");
+
+                } else {
+                    scoreCheck(leftScore);
+                }
+
+            }
+            if (x + dx < ballRadius) {
+                if (y > leftPaddleY - ballRadius && y < leftPaddleY + leftPaddleHeight + ballRadius) {
+
+                    calcHit("left");
+
+                } else {
+                    scoreCheck(rightScore);
+                }
+
+            }
+            if (y + dy > canvas.height - ballRadius || y + dy < ballRadius) {
+                dy = -dy;
+            }
+        }
+
+        function calcHit(hitter) {
+            if (hitter == "left") {
+                dy = (y - leftPaddleY) / ((leftPaddleHeight + 2 * ballRadius) / 4) - 2;
+            }
+            if (hitter == "right") {
+                dy = (y - rightPaddleY) / ((rightPaddleHeight + 2 * ballRadius) / 4) - 2;
+            }
+
+            dx = Math.sqrt(velocity - (dy * dy));
+            if (isNaN(dx)) { dx = 1; }
+
+            if (hitter == "left") {
+                if (dx < 0) { dx = -dx; }
+            }
+            if (hitter == "right") {
+                if (dx > 0) { dx = -dx; }
+            }
+
+            velocity = velocity + 2;
+        }
+
+        function scoreCheck(scorer) {
+            x = canvas.width / 2;
+            y = canvas.height / 2;
+            dx = 0;
+            dy = 0;
+            velocity = Vel;
+            if (scorer == leftScore) {
+                leftScore.innerHTML = parseInt(leftScore.innerHTML) + 1;
+                leftPaddleHeight = leftPaddleHeight - 10;
+                setTimeout(function () { dx = -2; dy = 0 }, 2000);
+            }
+            if (scorer == rightScore) {
+                rightScore.innerHTML = parseInt(rightScore.innerHTML) + 1;
+                rightPaddleHeight = rightPaddleHeight - 10;
+                setTimeout(function () { dx = 2; dy = 0 }, 2000);
+            }
+        }
+
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawBall();
+            drawPaddles();
+            checkWalls();
+            movePaddles();
+
+
+            if (rightPaddleHeight == 0) {
+                window.clearInterval(gameLoop);
+                alert("Right Wins!!!")
+            }
+            if (leftPaddleHeight == 0) {
+                window.clearInterval(gameLoop);
+                alert("Left Wins!!!")
+            }
+
+
+            x += dx;
+            y += dy;
+        }
+        setTimeout(function () { alert("Enjoy the game :)"); }, 50);
+        var gameLoop = setInterval(draw, 10);
+
+    </script>
+
+</body>
+
+</html>
