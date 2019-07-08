@@ -27,21 +27,25 @@
         #movement_button1 {
             grid-column: 1;
             grid-row: 1;
+            user-select: none;
         }
 
         #movement_button2 {
             grid-column: 1;
             grid-row: 2;
+            user-select: none;
         }
 
         #movement_button3 {
             grid-column: 3;
             grid-row: 1;
+            user-select: none;
         }
 
         #movement_button4 {
             grid-column: 3;
             grid-row: 2;
+            user-select: none;
         }
 
         #leftScore {
@@ -62,7 +66,7 @@
             text-align: center;
             font-size: 3rem;
             width: 1000px;
-            height: 650px;
+            height: 550px;
             grid-template-rows: 1fr 1fr;
             grid-template-columns: 50px 1fr 50px;
             grid-gap: 15px;
@@ -78,15 +82,15 @@
 
     <div class="grid">
 
-        <button id="movement_button1" onmousedown="mouseDown(1)" ontouchstart="mouseDown(1)" onmouseup="mouseUp(1)" ontouchend="mouseUp(1)">Up</button>
-        <button id="movement_button2" onmousedown="mouseDown(2)" ontouchstart="mouseDown(2)" onmouseup="mouseUp(2)" ontouchend="mouseUp(2)">Down</button>
+        <button  id="movement_button1" onmousedown="mouseDown(1)" ontouchstart="mouseDown(1)" onmouseup="mouseUp(1)" ontouchend="mouseUp(1)">Up</button>
+        <button  id="movement_button2" onmousedown="mouseDown(2)" ontouchstart="mouseDown(2)" onmouseup="mouseUp(2)" ontouchend="mouseUp(2)">Down</button>
         <div class="canvasStyle">
             <span id="leftScore">0</span> <span id="rightScore">0</span>
-            <canvas id="myCanvas" width="800" height="600"></canvas>
+            <canvas id="myCanvas" width="800" height="500"></canvas>
         </div>
 
-        <button id="movement_button3" onmousedown="mouseDown(3)" ontouchstart="mouseDown(3)" onmouseup="mouseUp(3)" ontouchend="mouseUp(3)">Up</button>
-        <button id="movement_button4" onmousedown="mouseDown(4)" ontouchstart="mouseDown(4)" onmouseup="mouseUp(4)" ontouchend="mouseUp(4)">Down</button>
+        <button  id="movement_button3" onmousedown="mouseDown(3)" ontouchstart="mouseDown(3)" onmouseup="mouseUp(3)" ontouchend="mouseUp(3)">Up</button>
+        <button  id="movement_button4" onmousedown="mouseDown(4)" ontouchstart="mouseDown(4)" onmouseup="mouseUp(4)" ontouchend="mouseUp(4)">Down</button>
 
 
 
