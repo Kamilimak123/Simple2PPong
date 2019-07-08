@@ -10,11 +10,13 @@
             margin: 0;
         }
 
-        canvas {
+        .canvasStyle {
             background: #eee;
             display: block;
             margin: 20px auto;
             border: 1px solid #000000;
+            grid-row: 1/3;
+            grid-column: 2;
         }
 
         .container {
@@ -22,20 +24,49 @@
             text-align: center;
         }
 
-        .gameContainer {
-            margin: 10px auto;
-            text-align: center;
-            font-size: 3rem;
-            width: 800px;
-            height: 600px;
+        #movement_button1 {
+            grid-column: 1;
+            grid-row: 1;
+        }
+
+        #movement_button2 {
+            grid-column: 1;
+            grid-row: 2;
+        }
+
+        #movement_button3 {
+            grid-column: 3;
+            grid-row: 1;
+        }
+
+        #movement_button4 {
+            grid-column: 3;
+            grid-row: 2;
         }
 
         #leftScore {
             float: left;
+            text-align: center;
+            font-size: 3rem;
         }
 
         #rightScore {
             float: right;
+            text-align: center;
+            font-size: 3rem;
+        }
+
+        .grid {
+            display: grid;
+            margin: 10px auto;
+            text-align: center;
+            font-size: 3rem;
+            width: 1000px;
+            height: 650px;
+            grid-template-rows: 1fr 1fr;
+            grid-template-columns: 50px 1fr 50px;
+            grid-gap: 15px;
+            overflow: auto;
         }
     </style>
 </head>
@@ -45,9 +76,20 @@
         <h2 class="item">Pong Game</h2>
     </div>
 
-    <div class="gameContainer" width="800" height="600">
-        <span id="leftScore">0</span> <span id="rightScore">0</span>
-        <canvas id="myCanvas" width="800" height="600"></canvas>
+    <div class="grid">
+
+        <button id="movement_button1" onmousedown="mouseDown(1)" onmouseup="mouseUp(1)">Up</button>
+        <button id="movement_button2" onmousedown="mouseDown(2)" onmouseup="mouseUp(2)">Down</button>
+        <div class="canvasStyle">
+            <span id="leftScore">0</span> <span id="rightScore">0</span>
+            <canvas id="myCanvas" width="800" height="600"></canvas>
+        </div>
+
+        <button id="movement_button3" onmousedown="mouseDown(3)" onmouseup="mouseUp(3)">Up</button>
+        <button id="movement_button4" onmousedown="mouseDown(4)" onmouseup="mouseUp(4)">Down</button>
+
+
+
     </div>
 
     <script>
@@ -80,6 +122,20 @@
 
         document.addEventListener("keydown", keyDownHandler, false);
         document.addEventListener("keyup", keyUpHandler, false);
+
+        function mouseDown(arg) {
+            if (arg === 1) WPressed = true;
+            if (arg === 2) SPressed = true;
+            if (arg === 3) UpPressed = true;
+            if (arg === 4) DownPressed = true;
+        }
+
+        function mouseUp(arg) {
+            if (arg === 1) WPressed = false;
+            if (arg === 2) SPressed = false;
+            if (arg === 3) UpPressed = false;
+            if (arg === 4) DownPressed = false;
+        }
 
         function keyDownHandler(e) {
             if (e.key == "Up" || e.key == "ArrowUp") {
@@ -158,13 +214,13 @@
             ctx.closePath();
 
             ctx.beginPath();
-            ctx.rect(790, rightPaddleY, rightPaddleWidth, rightPaddleHeight);
+            ctx.rect(canvas.width - 10, rightPaddleY, rightPaddleWidth, rightPaddleHeight);
             ctx.fillStyle = "#0095DD";
             ctx.fill();
             ctx.closePath();
 
             ctx.beginPath();
-            ctx.arc(795, rightPaddleY + rightPaddleHeight / 2, 5, 0, Math.PI * 2);
+            ctx.arc(canvas.width - 5, rightPaddleY + rightPaddleHeight / 2, 5, 0, Math.PI * 2);
             ctx.fillStyle = "#FF0000";
             ctx.fill();
             ctx.closePath();
