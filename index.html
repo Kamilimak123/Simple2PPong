@@ -78,15 +78,15 @@
 
     <div class="grid">
 
-        <button id="movement_button1" onmousedown="mouseDown(1)" onmouseup="mouseUp(1)">Up</button>
-        <button id="movement_button2" onmousedown="mouseDown(2)" onmouseup="mouseUp(2)">Down</button>
+        <button id="movement_button1" onmousedown="mouseDown(1)" ontouchstart="mouseDown(1)" onmouseup="mouseUp(1)" ontouchend="mouseUp(1)">Up</button>
+        <button id="movement_button2" onmousedown="mouseDown(2)" ontouchstart="mouseDown(2)" onmouseup="mouseUp(2)" ontouchend="mouseUp(2)">Down</button>
         <div class="canvasStyle">
             <span id="leftScore">0</span> <span id="rightScore">0</span>
             <canvas id="myCanvas" width="800" height="600"></canvas>
         </div>
 
-        <button id="movement_button3" onmousedown="mouseDown(3)" onmouseup="mouseUp(3)">Up</button>
-        <button id="movement_button4" onmousedown="mouseDown(4)" onmouseup="mouseUp(4)">Down</button>
+        <button id="movement_button3" onmousedown="mouseDown(3)" ontouchstart="mouseDown(3)" onmouseup="mouseUp(3)" ontouchend="mouseUp(3)">Up</button>
+        <button id="movement_button4" onmousedown="mouseDown(4)" ontouchstart="mouseDown(4)" onmouseup="mouseUp(4)" ontouchend="mouseUp(4)">Down</button>
 
 
 
@@ -124,17 +124,17 @@
         document.addEventListener("keyup", keyUpHandler, false);
 
         function mouseDown(arg) {
-            if (arg === 1) WPressed = true;
-            if (arg === 2) SPressed = true;
-            if (arg === 3) UpPressed = true;
-            if (arg === 4) DownPressed = true;
+            if(arg === 1) WPressed = true;
+            if(arg === 2) SPressed = true;
+            if(arg === 3) UpPressed = true;
+            if(arg === 4) DownPressed = true;
         }
 
         function mouseUp(arg) {
-            if (arg === 1) WPressed = false;
-            if (arg === 2) SPressed = false;
-            if (arg === 3) UpPressed = false;
-            if (arg === 4) DownPressed = false;
+            if(arg === 1) WPressed = false;
+            if(arg === 2) SPressed = false;
+            if(arg === 3) UpPressed = false;
+            if(arg === 4) DownPressed = false;
         }
 
         function keyDownHandler(e) {
