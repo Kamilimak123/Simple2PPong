@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import Paddle from "./Paddle.js"
 import Ball from "./Ball.js";
 import InputHandler from "./input.js"
